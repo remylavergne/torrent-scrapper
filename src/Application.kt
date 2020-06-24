@@ -1,29 +1,20 @@
-package dev.remylavergne
-
 import dev.remylavergne.services.OkHttpHelper
+import enums.AllRepositories
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.routing
-import okhttp3.Request
-import org.jsoup.Jsoup
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import models.Torrent
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
-@kotlin.jvm.JvmOverloads
-fun Application.module(testing: Boolean = false) {
+fun Application.modulee() {
     OkHttpHelper.init(this)
-
- Jsoup.connect("https://www2.yggtorrent.se/engine/search?name=jaw&category=2145&sub_category=all&do=search&attempt=1&order=desc&sort=publish_date").get().run {
-     val elements = this.getElementsByClass("table-responsive results")
-
-     println()
- }
-    println()
-
 
     routing {
         root()
@@ -32,7 +23,23 @@ fun Application.module(testing: Boolean = false) {
 
 fun Routing.root() {
     get("/") {
-        call.respondText("Hello, World!")
+
+        val query = this.call.request.queryParameters["request"]
+
+        val results = mutableListOf<Torrent>()
+        val deferred = mutableListOf<Deferred<List<Torrent>>>()
+
+        AllRepositories.values().forEach { repository ->
+            deferred.add(async { repository.server.search("rick and morty") })
+        }
+
+        deferred.forEach { d ->
+            results.addAll(d.await())
+        }
+
+        val finalData = results.sortedByDescending { it.seeders }
+
+        call.respondText("${finalData.count()} fichiers trouvés !")
     }
 }
 

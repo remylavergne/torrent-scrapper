@@ -1,6 +1,4 @@
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
+
 import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -41,19 +39,19 @@ fun maind() {
 
     currentResponse = makeRequest(currentResponse.headers["location"]!!.replace("http", "https"), cookiesString)
 
-    val jsonObject = fromJson<JsonObject>(currentResponse.body?.string()!!)
+/*    val jsonObject = *//*fromJson<JsonObject>(currentResponse.body?.string()!!)*//*
 
     val allKeys = jsonObject.keySet()
 
-    val get = jsonObject.get(allKeys.first())
+    val get = jsonObject.get(allKeys.first())*/
 
     println("Breakpoint")
 
 }
 
-inline fun <reified T> fromJson(json: String): T {
+/*inline fun <reified T> fromJson(json: String): T {
     return Gson().fromJson(json, object: TypeToken<T>(){}.type)
-}
+}*/
 
 /**
  * Accept all certificates from CLoudFlare or other providers

@@ -1,5 +1,7 @@
 package repositories
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import models.Eztv
 import models.Torrent
 import org.jsoup.Jsoup
@@ -13,37 +15,41 @@ object EztvRepository : BaseRepository() {
         get() = "https://eztv.io"
 
     override suspend fun search(request: String): List<Torrent> {
+        return withContext(Dispatchers.IO) {
+            val eztv = mutableListOf<Torrent>()
 
-        val eztv = mutableListOf<Torrent>()
+            val url = "https://eztv.io/search/${request.replace(' ', '-')}"
 
-        val url = "https://eztv.io/search/${request.replace(' ', '-')}"
+            try {
+                val makeRequest = makeRequest(url, "")
 
-        val makeRequest = makeRequest(url, "")
+                makeRequest.body?.string()?.let { body ->
 
-        makeRequest.body?.string()?.let { body ->
+                    Jsoup.parse(body).run {
 
-            Jsoup.parse(body).run {
+                        val elementsByClass = this.getElementsByClass("forum_header_border")
 
-                val elementsByClass = this.getElementsByClass("forum_header_border")
+                        if (elementsByClass.isNotEmpty()) {
+                            val filter = elementsByClass.filter { it.tagName() == "tr" }
 
-                if (elementsByClass.isNotEmpty()) {
-                    val filter = elementsByClass.filter { it.tagName() == "tr" }
-
-                    filter.forEach { element ->
-                        var temporaryHtml = ""
-                        element.childNodes().filterIsInstance<Element>().forEach { informations ->
-                            temporaryHtml += informations.toString()
+                            filter.forEach { element ->
+                                var temporaryHtml = ""
+                                element.childNodes().filterIsInstance<Element>().forEach { informations ->
+                                    temporaryHtml += informations.toString()
+                                }
+                                // All informations necessary to build an object
+                                val newObject = Eztv.fromHtml(temporaryHtml)
+                                eztv.add(newObject)
+                            }
                         }
-                        // All informations necessary to build an object
-                        val newObject = Eztv.fromHtml(temporaryHtml)
-                        eztv.add(newObject)
                     }
                 }
+                return@withContext eztv
+            } catch (e: Exception) {
+                println(e)
+                return@withContext emptyList<Torrent>()
             }
-
         }
-
-        return eztv
     }
 
     override suspend fun checkServerStatus(): Boolean {

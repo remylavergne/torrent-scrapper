@@ -1,5 +1,7 @@
 package repositories
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import models.LEETX_URL
 import models.LeetX
 import models.Torrent
@@ -14,39 +16,40 @@ object LeetXRepository : BaseRepository() {
         get() = ""
 
     override suspend fun search(request: String): List<Torrent> {
+        return withContext(Dispatchers.IO) {
+            val leetXs = mutableListOf<LeetX>()
+            val url = "https://1337x.to/search/${request.replace(" ", "+")}/1/"
+            try {
+                val response = makeRequest(url, "")
+                if (response.code == 200) {
+                    val body = response.body?.string()
+                    Jsoup.parse(body).run {
+                        // Object
+                        val elementsByClass = this.getElementsByClass("table-list")
+                        if (elementsByClass.isNotEmpty()) {
+                            val elements = elementsByClass.first().childNodes().filterIsInstance<Element>()
+                                .first { it.tag().normalName() == "tbody" }
+                                .childNodes().filterIsInstance<Element>()
 
-        val leetXs = mutableListOf<LeetX>()
-        val url = "https://1337x.to/search/${request.replace(" ", "+")}/1/"
-        try {
-            val response = makeRequest(url, "")
-            if (response.code == 200) {
-                val body = response.body?.string()
-                Jsoup.parse(body).run {
-                    // Object
-                    val elementsByClass = this.getElementsByClass("table-list")
-                    if (elementsByClass.isNotEmpty()) {
-                        val elements = elementsByClass.first().childNodes().filterIsInstance<Element>()
-                            .first { it.tag().normalName() == "tbody" }
-                            .childNodes().filterIsInstance<Element>()
-
-                        elements.forEach { element ->
-                            val tempList = mutableListOf<String>()
-                            // Elements information extraction here
-                            element.childNodes().filterIsInstance<Element>().forEach {
-                                // Store in a listOf<String>()
-                                tempList.add(it.toString().replace("\n", ""))
+                            elements.forEach { element ->
+                                val tempList = mutableListOf<String>()
+                                // Elements information extraction here
+                                element.childNodes().filterIsInstance<Element>().forEach {
+                                    // Store in a listOf<String>()
+                                    tempList.add(it.toString().replace("\n", ""))
+                                }
+                                // Create a true LeetX object and store it
+                                leetXs.add(LeetX.fromHtml(tempList))
                             }
-                            // Create a true LeetX object and store it
-                            leetXs.add(LeetX.fromHtml(tempList))
                         }
                     }
                 }
+                return@withContext leetXs
+            } catch (e: Exception) {
+                println(e)
+                return@withContext emptyList<Torrent>()
             }
-        } catch (e: Exception) {
-            println()
         }
-
-        return leetXs
     }
 
     override suspend fun checkServerStatus(): Boolean {
