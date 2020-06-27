@@ -1,10 +1,12 @@
 package models
 
+import com.squareup.moshi.JsonClass
 import enums.Category
 import enums.SubCategory
 import repositories.EztvRepository
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 data class Eztv(
     override val id: String = UUID.randomUUID().toString(),
     override val category: Category? = null,

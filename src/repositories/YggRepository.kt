@@ -53,8 +53,7 @@ object YggRepository : BaseRepository() {
                     }
                 return@withContext items
             } catch (e: Exception) {
-                // TODO: Log Exception
-                println()
+                println(e)
                 return@withContext emptyList<Torrent>()
             }
         }
@@ -62,7 +61,7 @@ object YggRepository : BaseRepository() {
 
     override suspend fun checkServerStatus(): Boolean {
 
-        var status: Boolean = false
+        var status = false
         var cookiesString = ""
 
         val response = makeRequest(YGG_URL, "")

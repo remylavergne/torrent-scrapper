@@ -1,11 +1,13 @@
 package models
 
 import Exts.rarbgTimestamp
+import com.squareup.moshi.JsonClass
 import enums.Category
 import enums.SubCategory
 import repositories.RarbgRepository
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 data class Rarbg(
     override val id: String = UUID.randomUUID().toString(),
     override val category: Category? = null,

@@ -1,9 +1,11 @@
 package models
 
+import com.squareup.moshi.JsonClass
 import enums.Category
 import enums.SubCategory
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 class YggTorrent(
     override val id: String = UUID.randomUUID().toString(),
     override val category: Category? = null,
