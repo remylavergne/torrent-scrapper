@@ -1,37 +1,29 @@
 <template>
   <div>
-    <div class="torrent-results">Results</div>
+    <h1 class="torrent-results">Results</h1>
     <!-- component template -->
     <div>
-    <table class="torrent-list-results">
-      <!-- Headers -->
-      <thead>
-        <tr>
-          <th v-for="column in columns" :key="column">
-            {{ column | capitalize }}
-            <span class="arrow"></span>
-          </th>
-        </tr>
-      </thead>
+      <table class="torrent-list-results">
+        <!-- Headers -->
+        <thead class="torrent-list-results-header">
+          <tr>
+            <th v-for="column in columns" :key="column" class="headers-titles">
+              {{ column | capitalize }}
+              <span class="arrow"></span>
+            </th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr v-for="torrent in torrents" :key="torrent.id">
-          <td>{{ torrent.domain }}</td>
-          <td>{{ torrent.filename }}</td>
-          <td>{{ torrent.seeders }}</td>
-          <td>{{ torrent.leechers }}</td>
-        </tr>
-      </tbody>
-    </table>
+        <tbody>
+          <tr v-for="torrent in torrents" :key="torrent.id">
+            <td>{{ torrent.domain }}</td>
+            <td>{{ torrent.filename }}</td>
+            <td>{{ torrent.seeders }}</td>
+            <td>{{ torrent.leechers }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <!-- <div>
-      <ul id="example-1">
-        <li
-          v-for="item in torrents"
-          :key="item.id"
-        >{{ item.domain }} - {{ item.filename }} - {{ item.completion }} - {{ item.seeders }} - {{ item.leechers }}</li>
-      </ul>
-    </div> -->
   </div>
 </template>
 
@@ -68,7 +60,18 @@ li {
 a {
   color: #42b983;
 }
+.torrent-results {
+    margin-top: 20px;
+    font-style: italic;
+}
 .torrent-list-results {
-    margin: 20px auto;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+.torrent-list-results-header {
+    border: 1px solid lightblue;
+}
+.headers-titles {
+   padding: 10px;
 }
 </style>
