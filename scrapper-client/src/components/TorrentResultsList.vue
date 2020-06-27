@@ -1,21 +1,49 @@
 <template>
   <div>
     <div class="torrent-results">Results</div>
+    <!-- component template -->
     <div>
-      <ul id="example-1">
-        <li v-for="item in torrents" :key="item.id">{{ item.domain }} - {{ item.filename }} - {{ item.completion }} - {{ item.seeders }} - {{ item.leechers }}</li>
-      </ul>
+    <table class="torrent-list-results">
+      <!-- Headers -->
+      <thead>
+        <tr>
+          <th v-for="column in columns" :key="column">
+            {{ column | capitalize }}
+            <span class="arrow"></span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr v-for="torrent in torrents" :key="torrent.id">
+          <td>{{ torrent.domain }}</td>
+          <td>{{ torrent.filename }}</td>
+          <td>{{ torrent.seeders }}</td>
+          <td>{{ torrent.leechers }}</td>
+        </tr>
+      </tbody>
+    </table>
     </div>
+    <!-- <div>
+      <ul id="example-1">
+        <li
+          v-for="item in torrents"
+          :key="item.id"
+        >{{ item.domain }} - {{ item.filename }} - {{ item.completion }} - {{ item.seeders }} - {{ item.leechers }}</li>
+      </ul>
+    </div> -->
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Torrent } from "@/models/Torrent.model";
+import { Torrent } from "@/models/Torrentorrent.model";
 
 @Component
 export default class TorrentResultsList extends Vue {
   @Prop() torrents!: Torrent[];
+
+  private columns: string[] = ["Domain", "Filename", "Seeders", "Leechers"];
 
   mounted() {
     console.log("TorrentResultsList mounted()");
@@ -34,10 +62,13 @@ ul {
   padding: 0;
 }
 li {
-  display: inline-block;
+  white-space: nowrap;
   margin: 0 10px;
 }
 a {
   color: #42b983;
+}
+.torrent-list-results {
+    margin: 20px auto;
 }
 </style>
