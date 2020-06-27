@@ -15,7 +15,7 @@
         </thead>
 
         <tbody>
-          <tr v-for="torrent in torrents" :key="torrent.id">
+          <tr v-for="torrent in torrents" :key="torrent.id" v-on:click="openTorrent(torrent)">
             <td>{{ torrent.domain }}</td>
             <td>{{ torrent.filename }}</td>
             <td>{{ torrent.seeders }}</td>
@@ -40,6 +40,11 @@ export default class TorrentResultsList extends Vue {
   mounted() {
     console.log("TorrentResultsList mounted()");
     console.log("data into list", this.torrents);
+  }
+
+  openTorrent(torrent: Torrent) {
+    console.log('Click torrent', torrent);
+     window.open(torrent.url, "_blank");
   }
 }
 </script>
