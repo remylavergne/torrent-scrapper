@@ -7,5 +7,6 @@ enum class AllRepositories(val server: BaseRepository) {
    // LEETX(LeetXRepository),
     // THEPIRATEBAY(ThePirateBayRepository),
     // RARBG(RarbgRepository),
-    EZTV(EztvRepository)
+    EZTV(EztvRepository),
+    TORRENT9(Torrent9Repository)
 }
