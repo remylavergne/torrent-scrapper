@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="torrent-results">Results</h1>
+    <h1 class="torrent-results">{{ torrents.length }} results</h1>
     <!-- component template -->
     <div>
       <table class="torrent-list-results">
@@ -8,14 +8,14 @@
         <thead class="torrent-list-results-header">
           <tr>
             <th v-for="column in columns" :key="column" class="headers-titles">
-              {{ column | capitalize }}
+              {{ column }}
               <span class="arrow"></span>
             </th>
           </tr>
         </thead>
 
         <tbody>
-          <tr v-for="torrent in torrents" :key="torrent.id" v-on:click="openTorrent(torrent)">
+          <tr v-for="torrent in torrents" :key="torrent.id" v-on:click="openTorrent(torrent)" class="result-cell">
             <td>{{ torrent.domain }}</td>
             <td>{{ torrent.filename }}</td>
             <td>{{ torrent.seeders }}</td>
@@ -43,7 +43,6 @@ export default class TorrentResultsList extends Vue {
   }
 
   openTorrent(torrent: Torrent) {
-    console.log('Click torrent', torrent);
      window.open(torrent.url, "_blank");
   }
 }
@@ -78,5 +77,8 @@ a {
 }
 .headers-titles {
    padding: 10px;
+}
+.result-cell {
+    cursor: pointer;
 }
 </style>
