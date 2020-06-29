@@ -24,7 +24,7 @@ object YggRepository : BaseRepository() {
                         " ",
                         "+"
                     )}&description=&file=&uploader=&category=all&sub_category=&do=search&order=desc&sort=publish_date"
-                ).get()
+                ).timeout(10_000).get()
                     .run {
 
                         val elements = this.getElementsByClass("table-responsive results")

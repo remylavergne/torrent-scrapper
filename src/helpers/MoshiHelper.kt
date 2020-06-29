@@ -5,10 +5,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import models.Eztv
-import models.Torrent
-import models.Torrent9
-import models.YggTorrent
+import models.*
 
 
 object MoshiHelper {
@@ -33,6 +30,8 @@ object MoshiHelper {
                 .withSubtype(YggTorrent::class.java, "ygg")
                 .withSubtype(Eztv::class.java, "eztv")
                 .withSubtype(Torrent9::class.java, "torrent9")
+                .withSubtype(Rarbg::class.java, "rarbg")
+                .withSubtype(LeetX::class.java, "leetx")
         )
             .add(KotlinJsonAdapterFactory())
             .build()

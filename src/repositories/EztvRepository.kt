@@ -21,11 +21,11 @@ object EztvRepository : BaseRepository() {
             val url = "https://eztv.io/search/${request.replace(' ', '-')}"
 
             try {
-                val makeRequest = makeRequest(url, "")
-
-                makeRequest.body?.string()?.let { body ->
-
-                    Jsoup.parse(body).run {
+                Jsoup.connect(url)
+                    .timeout(10_000)
+                    .proxy("1.255.48.197", 8080)
+                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36")
+                    .get().run {
 
                         val elementsByClass = this.getElementsByClass("forum_header_border")
 
@@ -43,13 +43,32 @@ object EztvRepository : BaseRepository() {
                             }
                         }
                     }
-                }
-                return@withContext eztv
+
+                return@withContext clearIrrelevantEztvResults(request, eztv)
             } catch (e: Exception) {
                 println(e)
                 return@withContext emptyList<Torrent>()
             }
         }
+    }
+
+    /**
+     * If EZTV found nothing relevant, it displays some random results. We don't need to expose them to the client...
+     */
+    private fun clearIrrelevantEztvResults(request: String, founds: List<Torrent>): List<Torrent> {
+        val words = request.split(" ")
+        val resultsFiltered = mutableListOf<Torrent>()
+
+        founds.forEach { torrent: Torrent ->
+            words.forEach searchWordMatching@{ word: String ->
+                if (torrent.filename.contains(word)) {
+                    resultsFiltered.add(torrent)
+                    return@searchWordMatching
+                }
+            }
+        }
+
+        return resultsFiltered
     }
 
     override suspend fun checkServerStatus(): Boolean {

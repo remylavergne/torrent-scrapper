@@ -67,7 +67,7 @@ fun installPlugins(application: Application) {
 }
 
 fun Routing.root() {
-    get("/{query}") {
+    get("/classic-search/{query}") {
         // TODO => Mettre dans un Service !
         val query = this.call.parameters["query"]
         var response = "{ \"error\": \"No Data\" }"

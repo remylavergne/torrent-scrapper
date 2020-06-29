@@ -19,11 +19,13 @@ object LeetXRepository : BaseRepository() {
         return withContext(Dispatchers.IO) {
             val leetXs = mutableListOf<LeetX>()
             val url = "https://1337x.to/search/${request.replace(" ", "+")}/1/"
+
             try {
-                val response = makeRequest(url, "")
-                if (response.code == 200) {
-                    val body = response.body?.string()
-                    Jsoup.parse(body).run {
+                Jsoup.connect(url)
+                    .timeout(10_000)
+                    .proxy("1.255.48.197", 8080)
+                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36")
+                    .get().run {
                         // Object
                         val elementsByClass = this.getElementsByClass("table-list")
                         if (elementsByClass.isNotEmpty()) {
@@ -42,8 +44,8 @@ object LeetXRepository : BaseRepository() {
                                 leetXs.add(LeetX.fromHtml(tempList))
                             }
                         }
+
                     }
-                }
                 return@withContext leetXs
             } catch (e: Exception) {
                 println(e)

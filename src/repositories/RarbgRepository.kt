@@ -16,12 +16,14 @@ object RarbgRepository : BaseRepository() {
     override suspend fun search(request: String): List<Torrent> {
         return withContext(Dispatchers.IO) {
             val url = "https://rarbgmirror.com/torrents.php?search=${request.replace(' ', '+')}&order=seeders&by=DESC"
-            var response: Response? = null
             val torrents = mutableListOf<Torrent>()
 
             try {
-                response = makeRequest(url, "")
-                Jsoup.parse(response?.body?.string()).run {
+                Jsoup.connect(url)
+                    .timeout(10_000)
+                    .proxy("1.255.48.197", 8080)
+                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36")
+                    .get().run {
 
                     val elementsByClass = this.getElementsByClass("lista2")
 
