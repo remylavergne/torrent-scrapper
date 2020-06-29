@@ -36,7 +36,7 @@ export default class HelloWorld extends Vue {
     console.log("getQueryResults() called");
     if (this.request.length > 0) {
       console.log("request", this.request);
-      fetch(`http://localhost:7070/${this.request.trim()}`, {
+      fetch(`http://localhost:7070/classic-search/${this.request.trim()}`, {
         method: "GET"
         //   headers: {
         //     "Content-Type": "application/json"
