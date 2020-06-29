@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Torrent } from "@/models/Torrentorrent.model";
+import { Torrent } from "../models/Torrent.model";
 
 @Component
 export default class TorrentResultsList extends Vue {

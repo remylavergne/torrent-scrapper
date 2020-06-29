@@ -20,12 +20,12 @@ import TorrentResultsList from "@/components/TorrentResultsList.vue";
 import { Torrent } from "@/models/Torrent.model";
 
 @Component({
-  name: "home",
+  name: "search",
   components: {
     TorrentResultsList
   }
 })
-export default class HelloWorld extends Vue {
+export default class Search extends Vue {
   @Prop() private msg!: string;
   @Prop() private test!: string;
   request = "";
@@ -76,7 +76,7 @@ a {
 }
 input {
   width: 200px;
-  height: 35px;
+  height: 31px;
   padding-left: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
