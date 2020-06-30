@@ -64,18 +64,6 @@ docker attach gradle-env
 
 La CLI de `Gradle` est à nouveau opérationnelle.
 
-### Initialisation du projet
-
-```bash
-# Clean-up du projet
-gradle clean
-# Initialisation des variables d'environnement
-# NOTE: la clé de l'API doit être passée en paramètre !
-source setenv.sh [API_KEY]
-# Compilation du projet
-gradle build
-```
-
 ### Exécution de l'application
 
 ```bash
@@ -83,4 +71,17 @@ gradle build
 gradle run
 ```
 
-Crédits @ [Clément LAVERGNE](https://github.com/ClementLavergne)
+Crédits @ [Clément LAVERGNE](https://github.com/ClementLavergne) ⭐️
+
+## Lancer l'interface Web
+
+```shell
+# 1. Se placer à la racine du projet
+# 2. Lancer la commande suivante pour créer l'image et le container
+docker build -f vuejs-dockerfile -t scrapper-client ./scrapper-client
+# 3. Run du container
+docker run -it -p 8080:8080 --rm --name scrapper-client-1 scrapper-client
+# 4. Se connecter à l'adresse locale
+http://127.0.0.1:8080/
+# 5. Enjoy 🤡
+```
