@@ -2,16 +2,11 @@ package models
 
 import Exts.rarbgTimestamp
 import com.squareup.moshi.JsonClass
-import enums.Category
-import enums.SubCategory
-import repositories.RarbgRepository
 import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class Rarbg(
     override val id: String = UUID.randomUUID().toString(),
-    override val category: Category? = null,
-    override val subCategory: SubCategory? = null,
     override val url: String = "",
     override val filename: String = "",
     override val commentsCount: Int = 0,
@@ -25,9 +20,9 @@ data class Rarbg(
 
     companion object {
 
-        fun fromHtml(html: String, category: Category? = null, subCategory: SubCategory? = null): Rarbg {
+        fun fromHtml(html: String): Rarbg {
             return Rarbg(
-                url = RarbgRepository.domain + RarbgHtmlRegex.URL.regex.find(html)?.groupValues?.last(),
+                url = RARBG_DOMAIN + RarbgHtmlRegex.URL.regex.find(html)?.groupValues?.last(),
                 filename = RarbgHtmlRegex.FILENAME.regex.find(html)?.groupValues?.last() ?: "",
                 commentsCount = RarbgHtmlRegex.COMMENTS.regex.find(html)?.groupValues?.last()?.toInt() ?: 0,
                 elapsedTimestamp = RarbgHtmlRegex.DATE.regex.find(html)?.groupValues?.last()?.rarbgTimestamp() ?: 0,

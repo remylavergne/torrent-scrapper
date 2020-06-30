@@ -27,6 +27,7 @@ La solution la plus simple consiste à créer un **container** que l'on pourra r
 #### Création du container
 
 Il faut lancer un terminal à partir d'ici et exécuter les commandes suivantes :
+(Pour Windows, ce nouveau [terminal](https://github.com/Microsoft/Terminal) est recommandé, ou PowerShell)
 
 ```bash
 # Création et connexion à un container Gradle nommé "gradle-env" :
@@ -35,7 +36,10 @@ Il faut lancer un terminal à partir d'ici et exécuter les commandes suivantes 
 # 3. Redirection du port `8080` vers celui de l`hôte
 # 4. Connexion à la session `gradle`
 # 5. Lancement d'un terminal `bash` en intéractif
+# Unix
 docker run --name gradle-env -u gradle -it -v `pwd`:/home/gradle/project -w /home/gradle/project -p 8080:8080 gradle bash
+# Windows
+docker run --name gradle-env -u gradle -it -v ${pwd}:/home/gradle/project -w /home/gradle/project -p 8080:8080 gradle bash
 # Debug de la CLI Gradle
 gradle -v
 # Se déconnecter de la session
@@ -74,6 +78,8 @@ gradle run
 Crédits @ [Clément LAVERGNE](https://github.com/ClementLavergne) ⭐️
 
 ## Lancer l'interface Web
+
+L'interface Web se lance dans un container séparé. Il faut donc que les deux containers tournent pour que l'application complète fonctionne.
 
 ```shell
 # 1. Se placer à la racine du projet

@@ -1,15 +1,11 @@
 package models
 
 import com.squareup.moshi.JsonClass
-import enums.Category
-import enums.SubCategory
 import java.util.*
 
 @JsonClass(generateAdapter = true)
 class YggTorrent(
     override val id: String = UUID.randomUUID().toString(),
-    override val category: Category? = null,
-    override val subCategory: SubCategory? = null,
     override val url: String = "",
     override val filename: String = "",
     override val commentsCount: Int = 0,
@@ -23,7 +19,7 @@ class YggTorrent(
 
     companion object {
 
-        fun fromListHtml(list: List<String>, category: Category? = null, subCategory: SubCategory? = null): YggTorrent {
+        fun fromListHtml(list: List<String>): YggTorrent {
             if (list.count() != 9) {
                 throw Exception("Wrong list !")
             }

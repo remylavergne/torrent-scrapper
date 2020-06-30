@@ -1,15 +1,11 @@
 package models
 
 import com.squareup.moshi.JsonClass
-import enums.Category
-import enums.SubCategory
 import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class LeetX(
     override val id: String = UUID.randomUUID().toString(),
-    override val category: Category? = null,
-    override val subCategory: SubCategory? = null,
     override val url: String = "",
     override val filename: String = "",
     override val commentsCount: Int = 0,
@@ -23,8 +19,6 @@ data class LeetX(
 ) : Torrent() {
 
     companion object {
-
-        private const val LEETX_DOMAIN = "https://1337x.to"
 
         fun fromHtml(html: List<String>): LeetX {
 
