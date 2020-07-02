@@ -1,17 +1,10 @@
 package models
 
-const val SUCCESS_IMAGE_URL = "file:src/main/resources/images/success.png"
-const val ERROR_IMAGE_URL = "file:src/main/resources/images/error.png"
 
-
-/** YGG */
-const val YGG_URL = "https://www2.yggtorrent.pe/"
-
-/** 1337x */
-const val LEETX_URL = "https://1337x.to/"
-
-/** ThePirateBay */
-const val THEPIRATEBAY_URL = "https://thepiratebay.org/"
-
-/** All servers */
-val ALL_SERVERS = listOf(YGG_URL, LEETX_URL, THEPIRATEBAY_URL)
+/** Services URLs */
+const val YGG_DOMAIN = "https://www2.yggtorrent.pe"
+const val LEETX_DOMAIN = "https://1337x.to"
+const val THEPIRATEBAY_DOMAIN = "https://thepiratebay.org"
+const val EZTV_DOMAIN = "https://eztv.io"
+const val RARBG_DOMAIN = "https://rarbgmirror.com"
+const val TORRENT9_DOMAIN = "https://ww1.torrent9.is"

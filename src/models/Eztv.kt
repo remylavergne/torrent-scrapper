@@ -1,16 +1,11 @@
 package models
 
 import com.squareup.moshi.JsonClass
-import enums.Category
-import enums.SubCategory
-import repositories.EztvRepository
 import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class Eztv(
     override val id: String = UUID.randomUUID().toString(),
-    override val category: Category? = null,
-    override val subCategory: SubCategory? = null,
     override val url: String = "",
     override val filename: String = "",
     override val commentsCount: Int = 0,
@@ -25,11 +20,10 @@ data class Eztv(
     companion object {
         fun fromHtml(html: String): Eztv {
             return Eztv(
-                url = EztvRepository.domain + EztvRegex.URL.regex.find(html)?.groupValues?.last(),
+                url = EZTV_DOMAIN + EztvRegex.URL.regex.find(html)?.groupValues?.last(),
                 filename = EztvRegex.FILENAME.regex.find(html)?.groupValues?.last() ?: "",
                 elapsedTimestamp = System.currentTimeMillis(),
                 seeders = EztvRegex.SEEDERS.regex.find(html)?.groupValues?.last()?.toInt() ?: 0
-
             )
         }
     }

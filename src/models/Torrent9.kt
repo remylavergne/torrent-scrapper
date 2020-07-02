@@ -1,14 +1,10 @@
 package models
 
 import com.squareup.moshi.JsonClass
-import enums.Category
-import enums.SubCategory
 
 @JsonClass(generateAdapter = true)
 class Torrent9(
     override val id: String = java.util.UUID.randomUUID().toString(),
-    override val category: Category? = null,
-    override val subCategory: SubCategory? = null,
     override val url: String = "",
     override val filename: String = "",
     override val commentsCount: Int = 0,
@@ -29,7 +25,7 @@ class Torrent9(
 
             return Torrent9(
                 domain = "Torrent9.is",
-                url = "https://ww1.torrent9.is${Torrent9HtmlEnums.FILE_DETAILS_URL.regex.find(list)?.groupValues?.last()
+                url = TORRENT9_DOMAIN + "${Torrent9HtmlEnums.FILE_DETAILS_URL.regex.find(list)?.groupValues?.last()
                     ?.trim()}",
                 filename = Torrent9HtmlEnums.FILENAME.regex.find(list)?.groupValues?.last()?.trim() ?: "No name",
                 commentsCount = 0,
